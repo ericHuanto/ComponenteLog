@@ -10,4 +10,5 @@ public class Logging {
   public void registrar(ErrorLog error) {
     medioRegistro.registrar(error);
   }
+  
 }
