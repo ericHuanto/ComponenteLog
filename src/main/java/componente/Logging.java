@@ -1,14 +1,14 @@
 package componente;
 
-import registros.MedioRegistro;
+import registros.RegistroStrategy;
 
 public class Logging {
-  private MedioRegistro medioRegistro;
+  private RegistroStrategy registroStrategy;
 
   public Logging() {}
 
   public void registrar(ErrorLog error) {
-    medioRegistro.registrar(error);
+    registroStrategy.registrar(error);
   }
   
 }

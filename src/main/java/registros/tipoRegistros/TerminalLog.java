@@ -2,9 +2,9 @@ package registros.tipoRegistros;
 
 import componente.ErrorLog;
 import java.time.format.DateTimeFormatter;
-import registros.MedioRegistro;
+import registros.RegistroStrategy;
 
-public class TerminalLog implements MedioRegistro {
+public class TerminalLog implements RegistroStrategy {
 
   @Override
   public void registrar(ErrorLog error) {

@@ -2,6 +2,8 @@ package registros;
 
 import componente.ErrorLog;
 
-public interface MedioRegistro {
+public interface RegistroStrategy {
+
   void registrar(ErrorLog error);
+
 }

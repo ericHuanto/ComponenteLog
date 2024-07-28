@@ -1,9 +1,9 @@
 package registros.tipoRegistros;
 
 import componente.ErrorLog;
-import registros.MedioRegistro;
+import registros.RegistroStrategy;
 
-public class FIleLog implements MedioRegistro {
+public class FIleLog implements RegistroStrategy {
 
   @Override
   public void registrar(ErrorLog error) {

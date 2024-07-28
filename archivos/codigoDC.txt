@@ -1,0 +1,115 @@
+@startuml
+
+skinparam classBackgroundColor #ffffbf
+
+class Error {
+ mensaje: String
+ fechaHora: LocalDateTime
+ tracktrace: String
+}
+
+class Logging {
+ medioRegistro: RegistroStrategy
+
+ +registrar(Error): Void
+}
+
+interface RegistroEstrategy <<interface>>{
+ +registrar(Error): Void
+}
+
+class TerminalLog{
+ +registrar(Error): Void
+}
+
+class FileLog {
+ +registrar(Error): Void
+}
+
+class BaseDatoLog {
+ dataBase: DataBaseAdapter
+ +registrar(Error): Void
+}
+
+note top of BaseDatoLog: >> registrar(Error error) {\n  dataBase.coneccion();\n  dataBase.inserccion("error_log", error);\n  dataBase.desconeccion();\n}
+
+Interface DataBaseAdapter <<interface>> {
+ coneccion(): Void
+ inserccion(String, Error): Void
+ desconeccion(): Void
+}
+
+note "Fue necesario la creacion de estas\nclases adapter ya que las clases\nMongoDBConnect y MySqlConnect\nlas realizo un amigo y su firma\nno concuerda en como mi clase \nBaseDatoLog la usa" as N1
+
+class ConversorOfObjectToMap {
+ +convert(Objeto): Map<String, Objeto>
+}
+
+class MongoDBAdapter {
+ mongoDB: MongoDBConector
+ config: ConfigReader
+
+ coneccion(): Void
+ inserccion(String, Error): Void
+ desconeccion(): Void 
+}
+
+class MySqlAdapter {
+ mySql: MySqlConector
+ config: ConfigReader
+
+ coneccion(): Void
+ inserccion(String, Error): Void
+ desconeccion(): Void 
+}
+
+Class MongoDBConnect {
+ client: MongoClient
+ dataBase: MongoDataBase
+ 
+ connect(String, String): Void
+ insert(String, Document): Void
+ disconnect(): Void
+}
+
+Class MySqlConnect {
+ connection: Connection
+ 
+ connect(String, String, String): Void
+ insert(String, String[], Object[]): Void
+ disconnect(): Void
+}
+
+
+package MongoDb <<Database>> {
+}
+
+package MySql <<Database>> {
+}
+
+
+Logging -r-> RegistroEstrategy: "                           "
+Logging .u.> Error
+
+RegistroEstrategy <|.. FileLog
+RegistroEstrategy <|.. TerminalLog
+RegistroEstrategy <|.. BaseDatoLog
+
+TerminalLog -[hidden]r-> FileLog
+FileLog -[hidden]r-> BaseDatoLog
+
+BaseDatoLog -r-> DataBaseAdapter: "                             "
+DataBaseAdapter <|.. MongoDBAdapter
+DataBaseAdapter <|.. MySqlAdapter
+
+MongoDBAdapter --> MongoDBConnect
+MySqlAdapter --> MySqlConnect
+
+
+MongoDBAdapter .r. N1
+MySqlAdapter .l. N1
+
+MongoDBConnect --> MongoDb
+MySqlConnect --> MySql
+
+@enduml
