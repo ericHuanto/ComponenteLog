@@ -1,8 +1,8 @@
-package registros.tipoRegistros;
+package modosRegistros;
 
 import componente.ErrorLog;
 import java.time.format.DateTimeFormatter;
-import registros.RegistroStrategy;
+import modosRegistros.RegistroStrategy;
 
 public class TerminalLog implements RegistroStrategy {
 
