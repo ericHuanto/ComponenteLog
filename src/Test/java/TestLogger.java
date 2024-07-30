@@ -1,11 +1,9 @@
 import componente.ErrorLog;
 import componente.Logger;
+import componente.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
-import java.util.WeakHashMap;
-import modosRegistros.BaseDatoLog;
-import modosRegistros.TerminalLog;
 import modosRegistros.basesDatosAdapter.DataBaseAdapter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +22,7 @@ public class TestLogger {
 
   @Test
   public void logear_usando_la_terminal() throws Exception {
-    Logger logger = new Logger(new TerminalLog());
+    Logger logger = LoggerFactory.create("terminal");
 
     //redirigimos el output
     ByteArrayOutputStream salida = new ByteArrayOutputStream();
@@ -39,14 +37,16 @@ public class TestLogger {
 
   @Test
   public void loggear_usando_la_base_de_datos() throws Exception {
+    Logger logger = LoggerFactory.create("basedato");
+
     DataBaseAdapter baseDatoMockeada = mock(DataBaseAdapter.class);
-    Logger logger = new Logger(new BaseDatoLog( baseDatoMockeada ));
+    logger.setBaseDato(baseDatoMockeada);
 
     logger.registrar(error2);
 
-    //verify(baseDatoMockeada).coneccion();
-    //verify(baseDatoMockeada).inserccion("error_log", error2);
-    //verify(baseDatoMockeada).desconeccion();
+    verify(baseDatoMockeada).coneccion();
+    verify(baseDatoMockeada).inserccion("error_log", error2);
+    verify(baseDatoMockeada).desconeccion();
   }
 
 }

@@ -6,6 +6,8 @@ import modosRegistros.RegistroStrategy;
 
 public class TerminalLog implements RegistroStrategy {
 
+  public TerminalLog() {}
+
   @Override
   public void registrar(ErrorLog error) {
     System.out.println("Mensaje: " + error.getMensaje() +

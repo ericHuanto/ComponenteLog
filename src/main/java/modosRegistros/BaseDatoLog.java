@@ -1,8 +1,12 @@
 package modosRegistros;
 
+import lombok.Getter;
+import lombok.Setter;
 import modosRegistros.basesDatosAdapter.DataBaseAdapter;
 import componente.ErrorLog;
 
+@Getter
+@Setter
 public class BaseDatoLog implements RegistroStrategy {
   private DataBaseAdapter baseDato;
 
